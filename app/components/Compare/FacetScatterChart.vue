@@ -88,7 +88,10 @@ const chartableFacets = computed(() =>
     }),
 )
 
-const selectedFacetX = ref<ComparisonFacet>('downloads')
+// Dynamically choose safe defaults depending on the comparison type
+const selectedFacetX = ref<ComparisonFacet>(
+  isVersionComparison.value ? 'dependencies' : 'downloads'
+)
 const selectedFacetY = ref<ComparisonFacet>('installSize')
 
 const dataset = computed<VueUiScatterDatasetItem[]>(() =>
