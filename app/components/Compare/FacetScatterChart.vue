@@ -90,7 +90,7 @@ const chartableFacets = computed(() =>
 
 // Dynamically choose safe defaults depending on the comparison type
 const selectedFacetX = ref<ComparisonFacet>(
-  isVersionComparison.value ? 'dependencies' : 'downloads'
+  isVersionComparison.value ? 'dependencies' : 'downloads',
 )
 const selectedFacetY = ref<ComparisonFacet>('installSize')
 
