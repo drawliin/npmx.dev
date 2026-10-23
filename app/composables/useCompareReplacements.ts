@@ -34,8 +34,9 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
   const loading = shallowRef(false)
 
   const basePackages = computed(() =>
-    [...new Set(packages.value.map(p => parsePackageSpec(p).name))]
-      .filter(name => name !== NO_DEPENDENCY_ID),
+    [...new Set(packages.value.map(p => parsePackageSpec(p).name))].filter(
+      name => name !== NO_DEPENDENCY_ID,
+    ),
   )
 
   // Fetch replacements for all packages
