@@ -16,7 +16,6 @@ export function shouldHideFacetInVersionComparison(facetId: string): boolean {
   return (VERSION_COMPARISON_EXCLUDED_FACETS as readonly string[]).includes(facetId)
 }
 
-
 export function getRealPackages(packages: string[]): string[] {
   return packages.filter(p => p !== NO_DEPENDENCY_ID)
 }
