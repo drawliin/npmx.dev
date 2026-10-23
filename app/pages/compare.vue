@@ -68,7 +68,10 @@ const isVersionComparisonComputed = computed(() => isVersionComparison(packages.
 
 const filteredFacets = computed(() =>
   selectedFacets.value.filter(facet => {
-    if (isVersionComparisonComputed.value && VERSION_COMPARISON_EXCLUDED_FACETS.includes(facet.id)) {
+    if (
+      isVersionComparisonComputed.value &&
+      VERSION_COMPARISON_EXCLUDED_FACETS.includes(facet.id)
+    ) {
       return false
     }
     return true

@@ -59,14 +59,16 @@ const { facetLabels } = useFacetSelection()
 const isVersionComparisonComputed = computed(() => isVersionComparison(props.packages))
 
 const chartableFacets = computed(() =>
-  facetLabels.value
-    .filter(facet => {
-      if (!facet.chartable) return false
-      if (isVersionComparisonComputed.value && VERSION_COMPARISON_EXCLUDED_FACETS.includes(facet.name)) {
-        return false
-      }
-      return true
-    })
+  facetLabels.value.filter(facet => {
+    if (!facet.chartable) return false
+    if (
+      isVersionComparisonComputed.value &&
+      VERSION_COMPARISON_EXCLUDED_FACETS.includes(facet.name)
+    ) {
+      return false
+    }
+    return true
+  }),
 )
 
 const selectedFacetX = ref<ComparisonFacet>(
