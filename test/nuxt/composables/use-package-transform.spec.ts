@@ -50,6 +50,16 @@ function createTrustedPublisherWithAttestationsVersion(version: string) {
   }
 }
 
+function createStagedPublishVersion(version: string) {
+  return {
+    ...createVersion(version, true),
+    _npmUser: {
+      name: 'publisher',
+      approver: { name: 'approver' },
+    },
+  }
+}
+
 function createPackument(
   versions: Packument['versions'],
   time: Packument['time'],
@@ -68,6 +78,24 @@ function createPackument(
 }
 
 describe('transformPackument', () => {
+  it('detects versions released through staged publishing', () => {
+    const packument = createPackument(
+      { '1.0.0': createStagedPublishVersion('1.0.0') },
+      {
+        'created': '2026-08-03T00:00:00.000Z',
+        'modified': '2026-08-03T00:00:00.000Z',
+        '1.0.0': '2026-08-03T00:00:00.000Z',
+      },
+      '1.0.0',
+    )
+
+    expect(transformPackument(packument, '1.0.0').versions['1.0.0']?.trustStatus).toEqual({
+      provenance: true,
+      trustedPublisher: false,
+      stagedPublish: true,
+    })
+  })
+
   it('includes requested old version and preserves provenance on it', () => {
     const packument = createPackument(
       {
@@ -152,6 +180,7 @@ describe('transformPackument', () => {
       downgradedVersion: '1.0.1',
       downgradedPublishedAt: '2026-01-02T00:00:00.000Z',
       downgradedTrustLevel: 'none',
+      downgradedTrustedPublisher: false,
       trustedVersion: '1.0.0',
       trustedPublishedAt: '2026-01-01T00:00:00.000Z',
       trustedTrustLevel: 'provenance',
@@ -180,6 +209,7 @@ describe('transformPackument', () => {
       downgradedVersion: '1.0.1',
       downgradedPublishedAt: '2026-01-02T00:00:00.000Z',
       downgradedTrustLevel: 'none',
+      downgradedTrustedPublisher: false,
       trustedVersion: '1.0.0',
       trustedPublishedAt: '2026-01-01T00:00:00.000Z',
       trustedTrustLevel: 'provenance',

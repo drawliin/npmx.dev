@@ -1530,6 +1530,9 @@
             },
             "version_distribution": {
               "type": "string"
+            },
+            "daily_downloads_heatmap": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1862,6 +1865,9 @@
               "type": "string"
             },
             "description_to_provenance_trustedPublisher": {
+              "type": "string"
+            },
+            "description_to_trustedPublisher_without_provenance": {
               "type": "string"
             },
             "fallback_install_provenance": {
@@ -2523,6 +2529,63 @@
                 },
                 "aria_label": {
                   "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "downloads_heatmap": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "legend": {
+                  "type": "object",
+                  "properties": {
+                    "anomalies": {
+                      "type": "string"
+                    },
+                    "max": {
+                      "type": "string"
+                    },
+                    "min": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "nav_hint": {
+                  "type": "string"
+                },
+                "copy_alt": {
+                  "type": "object",
+                  "properties": {
+                    "introduction": {
+                      "type": "string"
+                    },
+                    "no_data": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "peak": {
+                      "type": "string"
+                    },
+                    "busiest_weekday": {
+                      "type": "string"
+                    },
+                    "weekday_comparison": {
+                      "type": "string"
+                    },
+                    "weekly_trend": {
+                      "type": "string"
+                    },
+                    "excluded_days": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
@@ -3503,6 +3566,18 @@
               "type": "string"
             },
             "verified_via": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "staged_publish": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "title": {
               "type": "string"
             }
           },
@@ -5458,9 +5533,6 @@
         "by_locale": {
           "type": "string"
         },
-        "by_file": {
-          "type": "string"
-        },
         "complete_text": {
           "type": "string"
         },
@@ -5472,27 +5544,6 @@
         },
         "progress_label": {
           "type": "string"
-        },
-        "table": {
-          "type": "object",
-          "properties": {
-            "file": {
-              "type": "string"
-            },
-            "status": {
-              "type": "string"
-            },
-            "error": {
-              "type": "string"
-            },
-            "empty": {
-              "type": "string"
-            },
-            "file_link": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
         }
       },
       "additionalProperties": false
