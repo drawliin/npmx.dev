@@ -62,7 +62,13 @@ const chartableFacets = computed(() =>
   (
     Object.entries(facetLabels.value) as [
       ComparisonFacet,
-      { label: string; description: string; chartable: boolean; chartable_scatter: boolean; formatter?: ((value: number) => string) | undefined },
+      {
+        label: string
+        description: string
+        chartable: boolean
+        chartable_scatter: boolean
+        formatter?: ((value: number) => string) | undefined
+      },
     ][]
   )
     .map(([name, facet]) => ({
@@ -73,10 +79,7 @@ const chartableFacets = computed(() =>
     }))
     .filter(facet => {
       if (!facet.chartable) return false
-      if (
-        isVersionComparisonComputed.value &&
-        shouldHideFacetInVersionComparison(facet.name)
-      ) {
+      if (isVersionComparisonComputed.value && shouldHideFacetInVersionComparison(facet.name)) {
         return false
       }
       return true
