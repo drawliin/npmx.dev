@@ -82,7 +82,14 @@ const filteredFacets = computed(() =>
   selectedFacets.value.filter(facet => {
     if (
       isVersionComparison.value &&
-      ['downloads', 'githubStars', 'githubForks', 'githubIssues', 'totalLikes', 'createdAt'].includes(facet.id)
+      [
+        'downloads',
+        'githubStars',
+        'githubForks',
+        'githubIssues',
+        'totalLikes',
+        'createdAt',
+      ].includes(facet.id)
     ) {
       return false
     }
