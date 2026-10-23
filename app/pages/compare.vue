@@ -60,7 +60,7 @@ const gridColumns = computed(() =>
       }
     }),
 )
- 
+
 // Filter out special NO_DEPENDENCY_ID entries
 const realPackages = computed(() => packages.value.filter(p => p !== NO_DEPENDENCY_ID))
 
