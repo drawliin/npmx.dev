@@ -56,6 +56,11 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const { facetLabels } = useFacetSelection()
 
+const basePackages = computed(() =>
+  [...new Set(props.packages.map(p => parsePackageSpec(p).name))]
+)
+const isVersionComparison = computed(() => basePackages.value.length === 1 && props.packages.length > 1)
+
 const chartableFacets = computed(() =>
   (
     Object.entries(facetLabels.value) as [
@@ -69,7 +74,13 @@ const chartableFacets = computed(() =>
       description: facet.description,
       chartable: facet.chartable_scatter,
     }))
-    .filter(facet => facet.chartable),
+    .filter(facet => {
+      if (!facet.chartable) return false
+      if (isVersionComparison.value && ['downloads', 'githubStars', 'githubForks', 'githubIssues', 'totalLikes'].includes(facet.name)) {
+        return false
+      }
+      return true
+    }),
 )
 
 const selectedFacetX = ref<ComparisonFacet>('downloads')

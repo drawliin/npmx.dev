@@ -72,6 +72,9 @@ const uniqueBasePackages = computed(() => [
 // Show trends section only if there are at least 2 distinct base packages to compare
 const canShowTrends = computed(() => uniqueBasePackages.value.length >= 2)
 
+// Whether we are comparing multiple versions of the exact same package
+const isVersionComparison = computed(() => uniqueBasePackages.value.length === 1 && realPackages.value.length > 1)
+
 // Whether we can add the no-dep column (not already added and have room)
 const canAddNoDep = computed(
   () => packages.value.length < MAX_PACKAGE_SELECTION && !packages.value.includes(NO_DEPENDENCY_ID),
@@ -450,7 +453,13 @@ useSeoMeta({
                 class="sm:grid grid-cols-2 gap-x-4"
               >
                 <div
-                  v-for="facet in selectedFacets.filter(facet => facet.chartable)"
+                  v-for="facet in selectedFacets.filter(facet => {
+                    if (!facet.chartable) return false
+                    if (isVersionComparison && ['downloads', 'githubStars', 'githubForks', 'githubIssues', 'totalLikes'].includes(facet.id)) {
+                      return false
+                    }
+                    return true
+                  })"
                   :key="facet.id"
                   class="my-6"
                 >
