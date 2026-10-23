@@ -18,7 +18,7 @@ const {
 // Filter out repository/package-level metrics during version comparisons
 const filteredFacetsByCategory = computed(() => {
   const result: Record<string, (typeof facetsByCategory.value)[string]> = {}
-  for (const category of categoryOrder.value) {
+  for (const category of categoryOrder) {
     const facets = facetsByCategory.value[category] ?? []
     result[category] = facets.filter(facet => {
       if (

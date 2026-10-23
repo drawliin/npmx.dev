@@ -109,7 +109,7 @@ export function buildCompareScatterChartDataset(
       return acc
     }
 
-    const pkgSpec = packages[index] || ''
+    const pkgSpec = packages[index] || `package-${index + 1}`
     const parsed = parsePackageSpec(pkgSpec)
     const name = packageData.package?.name || parsed.name
     const version = packageData.package?.version || parsed.version
