@@ -73,7 +73,9 @@ const uniqueBasePackages = computed(() => [
 const canShowTrends = computed(() => uniqueBasePackages.value.length >= 2)
 
 // Whether we are comparing multiple versions of the exact same package
-const isVersionComparison = computed(() => uniqueBasePackages.value.length === 1 && realPackages.value.length > 1)
+const isVersionComparison = computed(
+  () => uniqueBasePackages.value.length === 1 && realPackages.value.length > 1,
+)
 
 // Whether we can add the no-dep column (not already added and have room)
 const canAddNoDep = computed(
@@ -455,7 +457,16 @@ useSeoMeta({
                 <div
                   v-for="facet in selectedFacets.filter(facet => {
                     if (!facet.chartable) return false
-                    if (isVersionComparison && ['downloads', 'githubStars', 'githubForks', 'githubIssues', 'totalLikes'].includes(facet.id)) {
+                    if (
+                      isVersionComparison &&
+                      [
+                        'downloads',
+                        'githubStars',
+                        'githubForks',
+                        'githubIssues',
+                        'totalLikes',
+                      ].includes(facet.id)
+                    ) {
                       return false
                     }
                     return true
