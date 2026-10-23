@@ -373,7 +373,7 @@ useSeoMeta({
             {{ $t('compare.facets.none') }}
           </ButtonBase>
         </div>
-        <CompareFacetSelector />
+        <CompareFacetSelector :is-version-comparison="isVersionComparison" />
       </section>
 
       <!-- Comparison grid -->
