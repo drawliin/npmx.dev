@@ -17,13 +17,20 @@ const {
 
 // Filter out repository/package-level metrics during version comparisons
 const filteredFacetsByCategory = computed(() => {
-  const result: Record<string, typeof facetsByCategory.value[string]> = {}
+  const result: Record<string, (typeof facetsByCategory.value)[string]> = {}
   for (const category of categoryOrder.value) {
     const facets = facetsByCategory.value[category] ?? []
     result[category] = facets.filter(facet => {
       if (
         props.isVersionComparison &&
-        ['downloads', 'githubStars', 'githubForks', 'githubIssues', 'totalLikes', 'createdAt'].includes(facet.id)
+        [
+          'downloads',
+          'githubStars',
+          'githubForks',
+          'githubIssues',
+          'totalLikes',
+          'createdAt',
+        ].includes(facet.id)
       ) {
         return false
       }
