@@ -33,13 +33,12 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
   const replacements = shallowRef(new Map<string, ModuleReplacement | null>())
   const loading = shallowRef(false)
 
-  // Fetch replacements for all packages
   const basePackages = computed(() =>
     [...new Set(packages.value.map(p => parsePackageSpec(p).name))]
       .filter(name => name !== NO_DEPENDENCY_ID),
   )
 
-  // Fetch replacements for all base packages
+  // Fetch replacements for all packages
   async function fetchReplacements(names: string[]) {
     if (names.length === 0) return
 
