@@ -61,36 +61,14 @@ const gridColumns = computed(() =>
     }),
 )
 
-// Filter out special NO_DEPENDENCY_ID entries
-const realPackages = computed(() => packages.value.filter(p => p !== NO_DEPENDENCY_ID))
-
-// Extract unique base package names (e.g. ['lodash'] for ['lodash@3', 'lodash@4'])
-const uniqueBasePackages = computed(() => [
-  ...new Set(realPackages.value.map(p => parsePackageSpec(p).name)),
-])
-
-// Show trends section only if there are at least 2 distinct base packages to compare
+const realPackages = computed(() => getRealPackages(packages.value))
+const uniqueBasePackages = computed(() => getUniqueBasePackages(packages.value))
 const canShowTrends = computed(() => uniqueBasePackages.value.length >= 2)
+const isVersionComparisonComputed = computed(() => isVersionComparison(packages.value))
 
-// Whether we are comparing multiple versions of the exact same package
-const isVersionComparison = computed(
-  () => uniqueBasePackages.value.length === 1 && realPackages.value.length > 1,
-)
-
-// Filter out repository/package-level metrics during version comparisons
 const filteredFacets = computed(() =>
   selectedFacets.value.filter(facet => {
-    if (
-      isVersionComparison.value &&
-      [
-        'downloads',
-        'githubStars',
-        'githubForks',
-        'githubIssues',
-        'totalLikes',
-        'createdAt',
-      ].includes(facet.id)
-    ) {
+    if (isVersionComparisonComputed.value && VERSION_COMPARISON_EXCLUDED_FACETS.includes(facet.id)) {
       return false
     }
     return true

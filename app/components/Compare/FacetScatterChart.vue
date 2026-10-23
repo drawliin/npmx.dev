@@ -56,41 +56,21 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const { facetLabels } = useFacetSelection()
 
-const basePackages = computed(() => [...new Set(props.packages.map(p => parsePackageSpec(p).name))])
-const isVersionComparison = computed(
-  () => basePackages.value.length === 1 && props.packages.length > 1,
-)
+const isVersionComparisonComputed = computed(() => isVersionComparison(props.packages))
 
 const chartableFacets = computed(() =>
-  (
-    Object.entries(facetLabels.value) as [
-      ComparisonFacet,
-      { label: string; description: string; chartable_scatter: boolean },
-    ][]
-  )
-    .map(([name, facet]) => ({
-      name,
-      label: facet.label,
-      description: facet.description,
-      chartable: facet.chartable_scatter,
-    }))
+  facetLabels.value
     .filter(facet => {
       if (!facet.chartable) return false
-      if (
-        isVersionComparison.value &&
-        ['downloads', 'githubStars', 'githubForks', 'githubIssues', 'totalLikes'].includes(
-          facet.name,
-        )
-      ) {
+      if (isVersionComparisonComputed.value && VERSION_COMPARISON_EXCLUDED_FACETS.includes(facet.name)) {
         return false
       }
       return true
-    }),
+    })
 )
 
-// Dynamically choose safe defaults depending on the comparison type
 const selectedFacetX = ref<ComparisonFacet>(
-  isVersionComparison.value ? 'dependencies' : 'downloads',
+  isVersionComparisonComputed.value ? 'dependencies' : 'downloads',
 )
 const selectedFacetY = ref<ComparisonFacet>('installSize')
 
