@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
@@ -61,7 +60,6 @@ const gridColumns = computed(() =>
     }),
 )
 
-const realPackages = computed(() => getRealPackages(packages.value))
 const uniqueBasePackages = computed(() => getUniqueBasePackages(packages.value))
 const canShowTrends = computed(() => uniqueBasePackages.value.length >= 2)
 const isVersionComparisonComputed = computed(() => isVersionComparison(packages.value))
@@ -70,7 +68,7 @@ const filteredFacets = computed(() =>
   selectedFacets.value.filter(facet => {
     if (
       isVersionComparisonComputed.value &&
-      VERSION_COMPARISON_EXCLUDED_FACETS.includes(facet.id)
+      shouldHideFacetInVersionComparison(facet.id)
     ) {
       return false
     }

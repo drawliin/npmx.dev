@@ -21,7 +21,7 @@ const filteredFacetsByCategory = computed(() => {
   for (const category of categoryOrder) {
     const facets = facetsByCategory.value[category] ?? []
     result[category] = facets.filter(facet => {
-      if (props.isVersionComparison && VERSION_COMPARISON_EXCLUDED_FACETS.includes(facet.id)) {
+      if (props.isVersionComparison && shouldHideFacetInVersionComparison(facet.id)) {
         return false
       }
       return true

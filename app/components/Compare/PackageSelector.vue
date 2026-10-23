@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
-
 const packages = defineModel<string[]>({ required: true })
 
 const props = defineProps<{

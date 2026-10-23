@@ -59,16 +59,28 @@ const { facetLabels } = useFacetSelection()
 const isVersionComparisonComputed = computed(() => isVersionComparison(props.packages))
 
 const chartableFacets = computed(() =>
-  facetLabels.value.filter(facet => {
-    if (!facet.chartable) return false
-    if (
-      isVersionComparisonComputed.value &&
-      VERSION_COMPARISON_EXCLUDED_FACETS.includes(facet.name)
-    ) {
-      return false
-    }
-    return true
-  }),
+  (
+    Object.entries(facetLabels.value) as [
+      ComparisonFacet,
+      { label: string; description: string; chartable: boolean; chartable_scatter: boolean; formatter?: ((value: number) => string) | undefined },
+    ][]
+  )
+    .map(([name, facet]) => ({
+      name,
+      label: facet.label,
+      description: facet.description,
+      chartable: facet.chartable_scatter,
+    }))
+    .filter(facet => {
+      if (!facet.chartable) return false
+      if (
+        isVersionComparisonComputed.value &&
+        shouldHideFacetInVersionComparison(facet.name)
+      ) {
+        return false
+      }
+      return true
+    }),
 )
 
 const selectedFacetX = ref<ComparisonFacet>(
