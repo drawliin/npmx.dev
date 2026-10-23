@@ -51,14 +51,26 @@ const gridColumns = computed(() =>
     .map((pkg, i) => ({ pkg, originalIndex: i }))
     .filter(({ pkg }) => pkg !== NO_DEPENDENCY_ID)
     .map(({ pkg, originalIndex }) => {
+      const parsed = parsePackageSpec(pkg)
       const data = packagesData.value?.[originalIndex]
       return {
-        name: data?.package.name || pkg,
-        version: data?.package.version,
-        replacement: replacements.value.get(pkg) ?? null,
+        name: data?.package.name || parsed.name,
+        version: data?.package.version || parsed.version,
+        replacement: replacements.value.get(parsed.name) ?? null,
       }
     }),
 )
+
+// Filter out special NO_DEPENDENCY_ID entries
+const realPackages = computed(() => packages.value.filter(p => p !== NO_DEPENDENCY_ID))
+
+// Extract unique base package names (e.g. ['lodash'] for ['lodash@3', 'lodash@4'])
+const uniqueBasePackages = computed(() => 
+  [...new Set(realPackages.value.map(p => parsePackageSpec(p).name))]
+)
+
+// Show trends section only if there are at least 2 distinct base packages to compare
+const canShowTrends = computed(() => uniqueBasePackages.value.length >= 2)
 
 // Whether we can add the no-dep column (not already added and have room)
 const canAddNoDep = computed(
@@ -464,14 +476,16 @@ useSeoMeta({
             </TabPanel>
           </TabRoot>
 
-          <h2
-            id="trends-comparison-heading"
-            class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
-          >
-            {{ $t('compare.facets.trends.title') }}
-          </h2>
+          <template v-if="canShowTrends">
+            <h2
+              id="trends-comparison-heading"
+              class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
+            >
+              {{ $t('compare.facets.trends.title') }}
+            </h2>
 
-          <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
+            <CompareLineChart :packages="uniqueBasePackages" />
+          </template>
         </div>
 
         <div v-else-if="status === 'error'" class="text-center py-12" role="alert">
