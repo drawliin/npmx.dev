@@ -1,4 +1,5 @@
 import type { VueUiScatterDatasetItem } from 'vue-data-ui'
+import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { applyEllipsis } from '~/utils/charts'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 
