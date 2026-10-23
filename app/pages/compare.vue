@@ -32,7 +32,7 @@ const packages = computed({
 })
 
 // Facet selection and info
-const { filteredFacets, selectAll, deselectAll, isAllSelected, isNoneSelected } =
+const { selectedFacets, selectAll, deselectAll, isAllSelected, isNoneSelected } =
   useFacetSelection()
 
 // Fetch comparison data
@@ -79,7 +79,7 @@ const isVersionComparison = computed(
 
 // Filter out repository/package-level metrics during version comparisons
 const filteredFacets = computed(() =>
-  filteredFacets.value.filter(facet => {
+  selectedFacets.value.filter(facet => {
     if (
       isVersionComparison.value &&
       ['downloads', 'githubStars', 'githubForks', 'githubIssues', 'totalLikes', 'createdAt'].includes(facet.id)
