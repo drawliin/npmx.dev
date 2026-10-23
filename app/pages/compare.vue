@@ -65,9 +65,9 @@ const gridColumns = computed(() =>
 const realPackages = computed(() => packages.value.filter(p => p !== NO_DEPENDENCY_ID))
 
 // Extract unique base package names (e.g. ['lodash'] for ['lodash@3', 'lodash@4'])
-const uniqueBasePackages = computed(() => 
-  [...new Set(realPackages.value.map(p => parsePackageSpec(p).name))]
-)
+const uniqueBasePackages = computed(() => [
+  ...new Set(realPackages.value.map(p => parsePackageSpec(p).name)),
+])
 
 // Show trends section only if there are at least 2 distinct base packages to compare
 const canShowTrends = computed(() => uniqueBasePackages.value.length >= 2)

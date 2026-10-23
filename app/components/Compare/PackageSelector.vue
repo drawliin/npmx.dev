@@ -49,9 +49,7 @@ const showNoDependencyOption = computed(() => {
 })
 
 // Filter out already selected packages
-const selectedBaseNames = computed(() => 
-  new Set(packages.value.map(p => parsePackageSpec(p).name))
-)
+const selectedBaseNames = computed(() => new Set(packages.value.map(p => parsePackageSpec(p).name)))
 
 const filteredResults = computed(() => {
   if (!searchData.value?.objects) return []
